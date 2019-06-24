@@ -6,7 +6,7 @@
   "object": "event",
   "data": {
     "object": {
-      "date": 1380674206,
+      "created": 1380674206,
       "id": "in_00000000000000",
       "period_start": 1378082075,
       "period_end": 1380674075,
@@ -30,7 +30,6 @@
             "quantity": 1,
             "plan": {
               "interval": "month",
-              "name": "Member's Club",
               "amount": 100,
               "currency": "usd",
               "id": "fkx0AFo",
@@ -38,6 +37,7 @@
               "livemode": false,
               "interval_count": 1,
               "trial_period_days": null,
+              "product": "pr_00000000000000",
               "metadata": {}
             },
             "description": null,

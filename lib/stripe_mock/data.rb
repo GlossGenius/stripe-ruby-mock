@@ -111,6 +111,7 @@ module StripeMock
         object: "customer",
         created: 1372126710,
         id: cus_id,
+        name: nil,
         livemode: false,
         delinquent: false,
         discount: nil,
@@ -243,7 +244,8 @@ module StripeMock
         cvc_check: nil,
         address_line1_check: nil,
         address_zip_check: nil,
-        tokenization_method: nil
+        tokenization_method: nil,
+        metadata: {}
       }, params)
     end
 
@@ -261,7 +263,8 @@ module StripeMock
         status: 'new',
         account_holder_name: 'John Doe',
         account_holder_type: 'individual',
-        fingerprint: "aBcFinGerPrINt123"
+        fingerprint: "aBcFinGerPrINt123",
+        metadata: {}
       }.merge(params)
     end
 
@@ -289,6 +292,7 @@ module StripeMock
         current_period_start: 1308595038,
         current_period_end: 1308681468,
         status: 'trialing',
+        trial_from_plan: false,
         plan: {
           interval: 'month',
           amount: 7500,
@@ -332,7 +336,7 @@ module StripeMock
       lines << Data.mock_line_item() if lines.empty?
       invoice = {
         id: 'in_test_invoice',
-        date: 1349738950,
+        created: 1349738950,
         period_end: 1349738950,
         period_start: 1349738950,
         lines: {
@@ -406,7 +410,7 @@ module StripeMock
       {
         id: "test_ii",
         object: "invoiceitem",
-        date: 1349738920,
+        created: 1349738920,
         amount: 1099,
         livemode: false,
         proration: false,
@@ -504,6 +508,21 @@ module StripeMock
         name: "The Basic Plan",
         statement_descriptor: nil,
         trial_period_days: nil
+      }.merge(params)
+    end
+
+    def self.mock_product(params = {})
+      {
+        id: "default_test_prod",
+        object: "product",
+        active: true,
+        created: 1556896214,
+        livemode: false,
+        metadata: {},
+        name: "Default Test Product",
+        statement_descriptor: "PRODUCT",
+        type: "service",
+        updated: 1556918200,
       }.merge(params)
     end
 
