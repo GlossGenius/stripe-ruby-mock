@@ -39,7 +39,7 @@ module StripeMock
           due_by: nil,
           contacted: false
         },
-        transfer_schedule: {
+        payout_schedule: {
           delay_days: 7,
           interval: "daily"
         },
