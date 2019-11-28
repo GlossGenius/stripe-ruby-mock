@@ -71,7 +71,7 @@ module StripeMock
 
       def validate_create_plan_params(params)
         plan_id = params[:id].to_s
-        product_id = params[:product]
+        # product_id = params[:product]
 
         @base_strategy.create_plan_params.keys.each do |attr_name|
           message =
@@ -88,10 +88,10 @@ module StripeMock
           raise Stripe::InvalidRequestError.new(message, :id)
         end
 
-        unless products[product_id]
-          message = not_found_message(Stripe::Product, product_id)
-          raise Stripe::InvalidRequestError.new(message, :product)
-        end
+        # unless products[product_id]
+        #   message = not_found_message(Stripe::Product, product_id)
+        #   raise Stripe::InvalidRequestError.new(message, :product)
+        # end
 
         unless SUPPORTED_PLAN_INTERVALS.include?(params[:interval])
           message = invalid_plan_interval_message

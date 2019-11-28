@@ -36,7 +36,7 @@ module StripeMock
           :id => 'stripe_mock_default_plan_id',
           :interval => 'month',
           :currency => StripeMock.default_currency,
-          :product => nil, # need to override yourself to pass validations
+          :name => 'Default Test Product',
           :amount => 1337
         }.merge(params)
       end
