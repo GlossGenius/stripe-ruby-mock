@@ -47,6 +47,7 @@ require 'stripe_mock/request_handlers/helpers/token_helpers.rb'
 
 require 'stripe_mock/request_handlers/validators/param_validators.rb'
 
+require 'stripe_mock/request_handlers/account_links.rb'
 require 'stripe_mock/request_handlers/accounts.rb'
 require 'stripe_mock/request_handlers/external_accounts.rb'
 require 'stripe_mock/request_handlers/balance.rb'
@@ -77,6 +78,7 @@ require 'stripe_mock/request_handlers/ephemeral_key.rb'
 require 'stripe_mock/request_handlers/products.rb'
 require 'stripe_mock/request_handlers/tax_rates.rb'
 require 'stripe_mock/request_handlers/checkout.rb'
+require 'stripe_mock/request_handlers/checkout_session.rb'
 require 'stripe_mock/instance'
 
 require 'stripe_mock/test_strategies/base.rb'

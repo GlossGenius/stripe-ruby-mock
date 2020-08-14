@@ -24,6 +24,7 @@ module StripeMock
     include StripeMock::RequestHandlers::PaymentMethods
     include StripeMock::RequestHandlers::SetupIntents
     include StripeMock::RequestHandlers::ExternalAccounts
+    include StripeMock::RequestHandlers::AccountLinks
     include StripeMock::RequestHandlers::Accounts
     include StripeMock::RequestHandlers::Balance
     include StripeMock::RequestHandlers::BalanceTransactions
@@ -50,6 +51,7 @@ module StripeMock
     include StripeMock::RequestHandlers::EphemeralKey
     include StripeMock::RequestHandlers::TaxRates
     include StripeMock::RequestHandlers::Checkout
+    include StripeMock::RequestHandlers::Checkout::Session
 
     attr_reader :accounts, :balance, :balance_transactions, :bank_tokens, :charges, :coupons, :customers,
                 :disputes, :events, :invoices, :invoice_items, :orders, :payment_intents, :payment_methods,
