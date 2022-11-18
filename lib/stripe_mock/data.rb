@@ -1234,6 +1234,7 @@ module StripeMock
           customer: nil,
           description: nil,
           invoice: nil,
+          latest_charge: nil,
           last_payment_error: nil,
           livemode: false,
           metadata: {},
