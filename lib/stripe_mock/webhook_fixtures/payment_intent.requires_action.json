@@ -16,112 +16,6 @@
       "canceled_at": null,
       "cancellation_reason": null,
       "capture_method": "automatic",
-      "charges": {
-        "object": "list",
-        "data": [
-          {
-            "id": "ch_000000000000000000000000",
-            "object": "charge",
-            "amount": 2000,
-            "amount_captured": 0,
-            "amount_refunded": 0,
-            "application": null,
-            "application_fee": null,
-            "application_fee_amount": null,
-            "balance_transaction": null,
-            "billing_details": {
-              "address": {
-                "city": null,
-                "country": null,
-                "line1": null,
-                "line2": null,
-                "postal_code": null,
-                "state": null
-              },
-              "email": null,
-              "name": null,
-              "phone": null
-            },
-            "calculated_statement_descriptor": "EXAMPLECOMPANY",
-            "captured": false,
-            "created": 1648320002,
-            "currency": "usd",
-            "customer": "cus_00000000000000",
-            "description": "Payment for Invoice",
-            "destination": null,
-            "dispute": null,
-            "disputed": false,
-            "failure_code": "authentication_required",
-            "failure_message": "Your card was declined. This transaction requires authentication.",
-            "fraud_details": {
-            },
-            "invoice": "in_000000000000000000000000",
-            "livemode": false,
-            "metadata": {
-            },
-            "on_behalf_of": null,
-            "order": null,
-            "outcome": {
-              "network_status": "declined_by_network",
-              "reason": "authentication_required",
-              "risk_level": "normal",
-              "risk_score": 15,
-              "seller_message": "The bank returned the decline code `authentication_required`.",
-              "type": "issuer_declined"
-            },
-            "paid": false,
-            "payment_intent": "pi_000000000000000000000000",
-            "payment_method": "pm_000000000000000000000000",
-            "payment_method_details": {
-              "card": {
-                "brand": "visa",
-                "checks": {
-                  "address_line1_check": null,
-                  "address_postal_code_check": null,
-                  "cvc_check": "pass"
-                },
-                "country": "IE",
-                "exp_month": 7,
-                "exp_year": 2025,
-                "fingerprint": "R0zFsMh6EQNC0f1H",
-                "funding": "credit",
-                "installments": null,
-                "last4": "3220",
-                "mandate": null,
-                "network": "visa",
-                "three_d_secure": null,
-                "wallet": null
-              },
-              "type": "card"
-            },
-            "receipt_email": null,
-            "receipt_number": null,
-            "receipt_url": null,
-            "refunded": false,
-            "refunds": {
-              "object": "list",
-              "data": [
-
-              ],
-              "has_more": false,
-              "total_count": 0,
-              "url": "/v1/charges/ch_000000000000000000000000/refunds"
-            },
-            "review": null,
-            "shipping": null,
-            "source": null,
-            "source_transfer": null,
-            "statement_descriptor": null,
-            "statement_descriptor_suffix": null,
-            "status": "failed",
-            "transfer_data": null,
-            "transfer_group": null
-          }
-        ],
-        "has_more": false,
-        "total_count": 1,
-        "url": "/v1/charges?payment_intent=pi_000000000000000000000000"
-      },
       "client_secret": "pi_000000000000000000000000_secret_0000000000000000000000000",
       "confirmation_method": "automatic",
       "created": 1648320001,
@@ -129,6 +23,7 @@
       "customer": "cus_00000000000000",
       "description": "Payment for Invoice",
       "invoice": "in_000000000000000000000000",
+      "latest_charge": "ch_000000000000000000000000",
       "last_payment_error": null,
       "livemode": false,
       "metadata": {
