@@ -174,7 +174,7 @@ module StripeMock
 
         charge = Data.mock_charge
         payment_intent[:latest_charge] =
-          if params[:expand].include?('latest_charge')
+          if params[:expand]&.include?('latest_charge')
             charge
           else
             charge[:id]
