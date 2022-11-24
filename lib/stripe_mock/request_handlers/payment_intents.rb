@@ -34,7 +34,7 @@ module StripeMock
         )
 
         if params[:confirm] && status == 'succeeded'
-          payment_intents[id] = succeeded_payment_intent(payment_intents[id])
+          payment_intents[id] = succeeded_payment_intent(payment_intents[id], params)
         end
 
         payment_intents[id].clone
@@ -74,7 +74,7 @@ module StripeMock
         route =~ method_url
         payment_intent = assert_existence :payment_intent, $1, payment_intents[$1]
 
-        succeeded_payment_intent(payment_intent)
+        succeeded_payment_intent(payment_intent, params)
       end
 
       def confirm_payment_intent(route, method_url, params, headers)
@@ -85,7 +85,7 @@ module StripeMock
           payment_intent[:payment_method] = params[:payment_method]
         end
 
-        succeeded_payment_intent(payment_intent)
+        succeeded_payment_intent(payment_intent, params)
       end
 
       def cancel_payment_intent(route, method_url, params, headers)
@@ -169,16 +169,16 @@ module StripeMock
         }
       end
 
-      def succeeded_payment_intent(payment_intent)
+      def succeeded_payment_intent(payment_intent, params)
         payment_intent[:status] = 'succeeded'
-        btxn = new_balance_transaction('txn', { source: payment_intent[:id] })
 
-        payment_intent[:charges][:data] << Data.mock_charge(
-          balance_transaction: btxn,
-          amount: payment_intent[:amount],
-          currency: payment_intent[:currency],
-          payment_method: payment_intent[:payment_method]
-        )
+        charge = Data.mock_charge
+        payment_intent[:latest_charge] =
+          if params[:expand]&.include?('latest_charge')
+            charge
+          else
+            charge[:id]
+          end
 
         payment_intent
       end

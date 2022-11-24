@@ -16,15 +16,6 @@
       "canceled_at": 1648320024,
       "cancellation_reason": "requested_by_customer",
       "capture_method": "automatic",
-      "charges": {
-        "object": "list",
-        "data": [
-
-        ],
-        "has_more": false,
-        "total_count": 0,
-        "url": "/v1/charges?payment_intent=pi_000000000000000000000000"
-      },
       "client_secret": "pi_000000000000000000000000_secret_0000000000000000000000000",
       "confirmation_method": "automatic",
       "created": 1648320024,
@@ -32,6 +23,7 @@
       "customer": null,
       "description": "(created by Stripe CLI)",
       "invoice": null,
+      "latest_charge": null,
       "last_payment_error": null,
       "livemode": false,
       "metadata": {
