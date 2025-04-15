@@ -1434,7 +1434,7 @@ module StripeMock
         id: cs_id,
         object: 'checkout.session',
         billing_address_collection: nil,
-        cancel_url: 'https://example.com/cancel',
+        cancel_url: nil,
         client_reference_id: nil,
         customer: nil,
         customer_email: nil,
