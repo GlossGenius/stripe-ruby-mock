@@ -3,6 +3,7 @@ PATH
   specs:
     stripe-ruby-mock (4.0.0)
       dante (>= 0.2.0)
+      drb (>= 2.0.4, < 3)
       multi_json (~> 1.0)
       stripe (> 5, < 14)
 
@@ -15,11 +16,12 @@ GEM
       thor (>= 0.14.0)
     daemons (1.4.1)
     dante (0.2.0)
-    diff-lcs (1.6.0)
-    dotenv (3.1.7)
+    diff-lcs (1.6.1)
+    dotenv (2.8.1)
+    drb (2.2.1)
     eventmachine (1.2.7)
     multi_json (1.15.0)
-    rack (2.2.11)
+    rack (2.2.13)
     rake (13.2.1)
     rspec (3.13.0)
       rspec-core (~> 3.13.0)
@@ -43,6 +45,7 @@ GEM
 
 PLATFORMS
   ruby
+  x86_64-darwin-22
 
 DEPENDENCIES
   appraisal
@@ -54,4 +57,4 @@ DEPENDENCIES
   thin (~> 1.8.1)
 
 BUNDLED WITH
-   2.1.4
+   2.6.8
