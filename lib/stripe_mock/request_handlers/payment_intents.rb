@@ -180,6 +180,7 @@ module StripeMock
 
       def succeeded_payment_intent(payment_intent, params)
         payment_intent[:status] = 'succeeded'
+        btxn = new_balance_transaction('txn', { source: payment_intent[:id] })
 
         charge_id = new_id('ch')
 
@@ -194,9 +195,9 @@ module StripeMock
 
         payment_intent[:latest_charge] =
           if params[:expand]&.include?('latest_charge')
-            charge
+            charges[charge_id]
           else
-            charge[:id]
+            charge_id
           end
 
         payment_intent
