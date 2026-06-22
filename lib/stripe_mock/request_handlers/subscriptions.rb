@@ -39,6 +39,8 @@ module StripeMock
         stripe_account = headers && headers[:stripe_account] || Stripe.api_key
         route =~ method_url
 
+        normalize_discounts_param(params)
+
         subscription_plans = get_subscription_plans_from_params(params)
         customer = assert_existence :customer, $1, customers[stripe_account][$1]
 
@@ -95,6 +97,8 @@ module StripeMock
           end
         end
         route =~ method_url
+
+        normalize_discounts_param(params)
 
         subscription_plans = get_subscription_plans_from_params(params)
 
@@ -227,6 +231,8 @@ module StripeMock
         stripe_account = headers && headers[:stripe_account] || Stripe.api_key
         route =~ method_url
 
+        normalize_discounts_param(params, allow_removal: true)
+
         if params[:billing_cycle_anchor] == 'now'
           params[:billing_cycle_anchor] = Time.now.utc.to_i
         end
@@ -357,6 +363,33 @@ module StripeMock
       end
 
       private
+
+      # Translate the modern `discounts: [{ coupon: <id> }]` / `[{ promotion_code: <id> }]`
+      # array param into the legacy `coupon:` / `promotion_code:` params the handlers
+      # already process, so no downstream coupon/discount logic has to change.
+      #
+      # `discounts` normally arrives as a plain array, but the Stripe SDK can serialize
+      # an array of hashes as a hash keyed by index, e.g. `{ 0 => {...} }` — the same
+      # shape `items` can arrive in — so it is normalized with `.values` defensively.
+      #
+      # When `allow_removal` is set (update only), an empty `discounts` (`''` or `[]`)
+      # is translated into `coupon: ''` so the existing removal branch clears the
+      # discount. It is left off for creates so an empty array does not synthesise an
+      # empty-string coupon lookup.
+      def normalize_discounts_param(params, allow_removal: false)
+        return unless params.key?(:discounts)
+
+        discounts = params.delete(:discounts)
+        normalized = discounts.respond_to?(:values) ? discounts.values : discounts
+        entry = Array(normalized).first
+
+        if entry.is_a?(Hash)
+          params[:coupon] = entry[:coupon] if entry.key?(:coupon)
+          params[:promotion_code] = entry[:promotion_code] if entry.key?(:promotion_code)
+        elsif allow_removal && (normalized.nil? || normalized == '' || (normalized.respond_to?(:empty?) && normalized.empty?))
+          params[:coupon] = ''
+        end
+      end
 
       def get_subscription_plans_from_params(params)
         plan_ids = if params[:plan]

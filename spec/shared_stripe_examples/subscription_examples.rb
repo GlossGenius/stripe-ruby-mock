@@ -196,6 +196,34 @@ shared_examples 'Customer Subscriptions with plans' do
       }
     end
 
+    it 'contains coupon object when passed via the discounts array', live: true do
+      coupon = stripe_helper.create_coupon(id: 'free_coupon', duration: 'repeating', duration_in_months: 3)
+      customer = Stripe::Customer.create(source: gen_card_tk)
+      Stripe::Subscription.create(plan: plan.id, customer: customer.id, discounts: [{ coupon: coupon.id }])
+      customer = Stripe::Customer.retrieve(customer.id)
+
+      subscriptions = Stripe::Subscription.list(customer: customer.id)
+
+      expect(subscriptions.data).to be_a(Array)
+      expect(subscriptions.data.count).to eq(1)
+      expect(subscriptions.data.first.discount).not_to be_nil
+      expect(subscriptions.data.first.discount.id).not_to be_nil
+      expect(subscriptions.data.first.discount).to be_a(Stripe::Discount)
+      expect(subscriptions.data.first.discount.coupon.id).to eq(coupon.id)
+    end
+
+    it 'when coupon passed via the discounts array does not exist' do
+      customer = Stripe::Customer.create(source: gen_card_tk)
+
+      expect {
+        Stripe::Subscription.create(plan: plan.id, customer: customer.id, discounts: [{ coupon: 'none' }])
+      }.to raise_error {|e|
+        expect(e).to be_a Stripe::InvalidRequestError
+        expect(e.http_status).to eq(400)
+        expect(e.message).to eq('No such coupon: none')
+      }
+    end
+
     it "allows promotion code" do
       customer = Stripe::Customer.create(source: gen_card_tk)
       coupon = stripe_helper.create_coupon
@@ -203,6 +231,16 @@ shared_examples 'Customer Subscriptions with plans' do
 
       expect {
         Stripe::Subscription.create(plan: plan.id, customer: customer.id, promotion_code: promotion_code.id)
+      }.not_to raise_error
+    end
+
+    it "allows promotion code passed via the discounts array" do
+      customer = Stripe::Customer.create(source: gen_card_tk)
+      coupon = stripe_helper.create_coupon
+      promotion_code = Stripe::PromotionCode.create(coupon: coupon)
+
+      expect {
+        Stripe::Subscription.create(plan: plan.id, customer: customer.id, discounts: [{ promotion_code: promotion_code.id }])
       }.not_to raise_error
     end
 
@@ -965,6 +1003,47 @@ shared_examples 'Customer Subscriptions with plans' do
       subscription.coupon = coupon.id
       subscription.save
       subscription.coupon = nil
+      subscription.save
+
+      expect(subscription.discount).to be_nil
+    end
+
+    it 'when adds coupon via the discounts array', live: true do
+      coupon = stripe_helper.create_coupon
+      customer = Stripe::Customer.create(source: gen_card_tk, plan: plan.id)
+      subscription = Stripe::Subscription.retrieve(customer.subscriptions.data.first.id)
+
+      subscription.discounts = [{ coupon: coupon.id }]
+      subscription.save
+
+      expect(subscription.discount).not_to be_nil
+      expect(subscription.discount).to be_a(Stripe::Discount)
+      expect(subscription.discount.coupon.id).to eq(coupon.id)
+    end
+
+    it 'when adds not exist coupon via the discounts array' do
+      customer = Stripe::Customer.create(source: gen_card_tk, plan: plan.id)
+      subscription = Stripe::Subscription.retrieve(customer.subscriptions.data.first.id)
+
+      subscription.discounts = [{ coupon: 'none' }]
+
+      expect { subscription.save }.to raise_error {|e|
+                                                     expect(e).to be_a Stripe::InvalidRequestError
+                                                     expect(e.http_status).to eq(400)
+                                                     expect(e.message).to eq('No such coupon: none')
+                                                   }
+    end
+
+    it 'when coupon is removed via the discounts array' do
+      customer = Stripe::Customer.create(source: gen_card_tk, plan: plan.id)
+      coupon = stripe_helper.create_coupon
+      subscription = Stripe::Subscription.retrieve(customer.subscriptions.data.first.id)
+
+      subscription.discounts = [{ coupon: coupon.id }]
+      subscription.save
+      expect(subscription.discount).not_to be_nil
+
+      subscription.discounts = []
       subscription.save
 
       expect(subscription.discount).to be_nil
